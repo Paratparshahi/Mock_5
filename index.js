@@ -6,4 +6,4 @@ const port= process.env.PORT||3004;
 
 server.use(middleware);
 server.use(router);
-server.listen()
+server.listen(port)
