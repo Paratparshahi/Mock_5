@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <a href="./Wishlist.html">Wishlist</a>
+        <a href="./Ad.html">Ad</a>
+        <a href="./Cars.html">Cars</a>
+    </div>
+    <div id="wishlist_item">
+
+    </div>
+</body>
+<script>
+    var product=JSON.parse(localStorage.getItem('Wishlist'))||[];
+    product.map((elem)=>{
+        let div3 =document.createElement('div');
+            title=document.createElement('p');
+            title.innerText=elem.Desc;
+            title.style.fontSize='16px';
+            title.style.color='grey'
+            image=document.createElement('img');
+            image.style.width='80%'
+            image.src=elem.Image;
+            price =document.createElement('p');
+            price.innerText=elem.Price;
+            var year =document.createElement('p');
+            year.innerHTML=elem.year;
+            div3.append(image,title,price,year)
+            document.getElementById('wishlist_item').append(div3)
+    })
+</script>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Post Ad</h1>
+    <div>
+        <a href="./Wishlist.html">Wishlist</a>
+        <a href="./Ad.html">Ad</a>
+        <a href="./Cars.html">Cars</a>
+    </div>
+    <div>
+        <form action="">
+            <label>Id</label>
+            <input type="number" id="ids"><br><br>
+            <label>Brand</label>
+            <select name="" id="brand">
+                <option value="Tata">Tata</option>
+                <option value="Mercedes">Mercedes</option>
+                <option value="Maruti">Maruti</option>
+            </select><br><br>
+            
+            <label>Type</label>
+            <select name="" id="type">
+                <option value="Automated">Automated</option>
+                <option value="Manual">Manual</option>
+                
+            </select><br><br>
+            
+            <label>Year</label>
+            <select name="" id="Year">
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+            </select><br><br>
+            
+            <label>Price</label>
+            <input type="number" id="price"><br><br>
+            <label>Km driven</label>
+            <input type="text" id="km"><br><br>
+            <label >Description</label>
+            <input type="text" id="desc">
+            <button id="submi" onclick="Sub()">
+              Submit
+            </button>
+        </form>
+    </div>
+</body>
+<script>
+      function Sub() {
+        event.preventDefault()
+        var ids=document.getElementById('ids').value;
+       var brand= document.getElementById('brand').value;
+       var type=document.getElementById('type').value;
+       var year =document.getElementById('Year').value;
+       var price=document.getElementById('price').value;
+       var dist=document.getElementById('km').value;
+       var desc=document.getElementById('desc').value;
+       fetch("http://localhost:3004/cars", {
+     
+     // Adding method type
+     method: "POST",
+
+      
+     // Adding body or contents to send
+     body: JSON.stringify({
+         id:ids,
+         brand:brand,
+         type:type,
+         year:year,
+         kms:dist,
+         Description:desc,
+         Price:price
+     }),
+      
+     // Adding headers to the request
+     headers: {
+         "Content-type": "application/json; charset=UTF-8"
+     }
+ })
+  
+ // Converting to JSON
+ .then(response => response.json())
+  
+ // Displaying results to console
+ .then(json => console.log(json));
+      }
+</script>
+</html>

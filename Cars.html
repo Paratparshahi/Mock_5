@@ -4,12 +4,253 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/b4906ba0c9.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
+<style>
+    .top{
+      display: flex;
+      justify-content: space-around;
+    }
+    #car-display{
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+    }
+    #modal-container {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+#modal-content {
+  background-color: #fefefe;
+ /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Open Button */
+#open-button {
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+/* Close Button */
+#close-button {
+  cursor: pointer;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+}
+</style>
 <body>
     <div class="maincontent">
+        <div>
+            <a href="./Wishlist.html">Wishlist</a>
+            <a href="./Ad.html">Ad</a>
+            <a href="./Cars.html">Cars</a>
+        </div>
         <h1>Cars </h1>
-        
+        <div class="top">
+            <select name="" id="Brand" >
+                <option value="">Choosebrand</option>
+             <option value="Tata">Tata</option>
+             <option value="Mercedes">Mercedes</option>
+             <option value="Maruti">Maruti</option>
+             <option value="Hyundai">Hyundai</option>
+            </select>
+            <select id="price_sort" onchange="sortby()">
+                <option value="" >Sort by Price</option>
+             <option value="desc">High to low</option>
+             <option value="asc">Low to high</option>
+            </select>
+            <select id="kms_sort" onchange="sortby()">
+                <option value="">Sort by Kms</option>
+             <option value="desc">High to low</option>
+             <option value="asc">Low to high</option>
+            </select>
+<!-- Modal Container -->
+
+         </div>
+        <div id="car-display">
+
+        </div>
     </div>
 </body>
+<script>
+    var pricesort=document.getElementById('price_sort').value;
+    var kmssort =document.getElementById('kms_sort').value;
+    console.log(pricesort,kmssort)
+    var carsdata=[];
+    function sortkm(){
+        var sortkms=document.getElementById('kms_sort').value;
+        var bran=document.getElementById('Brand').value;
+        
+        if(bran.length>0 && sortkms.length>0){
+            fetch(`https://mock1112.onrender.com/cars?brand=${bran}&_sort=kms&_order=${sortkms}`).then((res)=>res.json()).then((res)=>{
+        carsdata=[];
+        carsdata.push(...carsdata,...res);
+        console.log(res)
+        document.getElementById(`car-display`).innerHTML=''
+        Showcars(carsdata);
+    })
+        }else if(bran.length>0){
+            fetch(`https://mock1112.onrender.com/cars?brand=${bran}`).then((res)=>res.json()).then((res)=>{
+        carsdata=[];
+        carsdata.push(...carsdata,...res);
+        console.log(res)
+        document.getElementById(`car-display`).innerHTML=''
+        Showcars(carsdata);
+    })
+        }else{
+            fetch(`https://mock1112.onrender.com/cars?_sort=Price&_order=${sortkms}`).then((res)=>res.json()).then((res)=>{
+        carsdata=[];
+        carsdata.push(...carsdata,...res);
+        console.log(res)
+        document.getElementById(`car-display`).innerHTML=''
+        Showcars(carsdata);
+    })
+        }
+        
+    }
+    function sortby() {
+        var sortspr=document.getElementById('price_sort').value;
+        var sortkms=document.getElementById('kms_sort').value;
+        var bran=document.getElementById('Brand').value;
+        
+        if(bran.length>0 && sortspr.length>0){
+            fetch(`https://mock1112.onrender.com/cars?brand=${bran}&_sort=Price&_order=${sortspr}`).then((res)=>res.json()).then((res)=>{
+        carsdata=[];
+        carsdata.push(...carsdata,...res);
+        console.log(res)
+        document.getElementById(`car-display`).innerHTML=''
+        Showcars(carsdata);
+    })
+        }else if(bran.length>0){
+            fetch(`https://mock1112.onrender.com/cars?brand=${bran}`).then((res)=>res.json()).then((res)=>{
+        carsdata=[];
+        carsdata.push(...carsdata,...res);
+        console.log(res)
+        document.getElementById(`car-display`).innerHTML=''
+        Showcars(carsdata);
+    })
+        }else{
+            fetch(`https://mock1112.onrender.com/cars?_sort=Price&_order=${sortspr}`).then((res)=>res.json()).then((res)=>{
+        carsdata=[];
+        carsdata.push(...carsdata,...res);
+        console.log(res)
+        document.getElementById(`car-display`).innerHTML=''
+        Showcars(carsdata);
+    })
+        }
+        
+        
+        
+    }
+    fetch(`https://mock1112.onrender.com/cars`).then((res)=>res.json()).then((res)=>{
+        console.log(res.cars);
+        carsdata.push(...carsdata,...res)
+        Showcars(carsdata);
+
+    })
+    function Showcars(data) {
+        data.forEach(element => {
+            var div =document.createElement('div');
+            var image=document.createElement('img');
+            image.src='https://imgd.aeplcdn.com/370x208/n/cw/ec/106257/venue-exterior-right-front-three-quarter-2.jpeg?isig=0&q=75';
+            var title=document.createElement('h3');
+            title.innerText=element.Description;
+            var div2=document.createElement('div');
+            div2.style.display='flex';
+           var smalldiv=document.createElement('div');
+           smalldiv.innerText='1000';
+           smalldiv.style.background="#f1fdff";
+           smalldiv.style.padding="5px 20px"
+           var smalldiv1=document.createElement('div');
+           smalldiv1.innerText=element.year;
+           smalldiv1.style.background="#f1fdff";
+           smalldiv1.style.padding="5px 20px"
+           var smalldiv2=document.createElement('div');
+           smalldiv2.innerText=element.brand;
+           smalldiv2.style.background="#f1fdff";
+           smalldiv.style.padding="5px 20px"
+           div2.append(smalldiv,smalldiv1,smalldiv2);
+           div2.style.justifyContent="space-around"
+           var div3=document.createElement('div');
+           div3.style.display="flex";
+           div3.style.justifyContent="space-around"
+           var price_month=document.createElement('h4');
+           price_month.innerText=`$ ${element.Price*(0.1)}/month`;
+           price_month.style.color="#ef802f"
+           var price=document.createElement('p');
+           price.innerText=`$ ${element.Price}`;
+           div3.append(price_month,price);
+           var div4 = document.createElement('div');
+           div4.style.display='flex';
+           var spans=document.createElement('span');
+           spans.className="fa-solid fa-trash";
+           spans.addEventListener("click",function (){
+             fetch(`https://mock1112.onrender.com/cars/${element.id}`, {
+              method: "DELETE",
+              headers: {
+      'Content-Type': 'application/json'
+    },}).then((res)=>res.json()).then((res)=>{
+                console.log(res);
+              })
+           })
+           spans2=document.createElement('span');
+           spans2.className="fa-solid fa-heart";
+           spans2.addEventListener('click',function (){
+            let store=JSON.parse(localStorage.getItem("Wishlist"))||[];
+            obj={
+                Image:image,
+                Desc:element.Description,
+                Price:element.Price,
+                Brand:element.brand,
+                year:element.year,
+                dist:element.kms
+            }
+            store.push(obj);
+            localStorage.setItem("Wishlist",JSON.stringify(store));
+            console.log(store);
+           })
+           div4.append(spans,spans2);
+           div4.style.justifyContent="space-around"
+           div.append(image,title,div2,div3,div4);
+           div.style.padding="30px";
+           div.style.textAlign='center'
+           document.getElementById('car-display').append(div);
+          
+        });
+    }
+    var modal = document.getElementById("modal-container");
+
+// Get the open button
+var openButton = document.getElementById("open-button");
+
+// Get the close button
+var closeButton = document.getElementById("close-button");
+
+// When the open button is clicked, show the modal
+openButton.onclick = function() {
+  modal.style.display = "block";
+}
+
+</script>
 </html>
